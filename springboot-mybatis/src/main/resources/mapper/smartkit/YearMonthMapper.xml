@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qidian.dao.smartkit.YearMonthMapper" >
+
+    <resultMap id="BaseResultMap" type="org.qidian.modal.smartkit.YearMonthType" >
+        <id column="year_moth_id" property="yearMothId" jdbcType="INTEGER" />
+        <result column="year_month_char" property="yearMonthChar" jdbcType="VARCHAR" />
+    </resultMap>
+    
+   	<resultMap id="BaseResultMapDto" type="org.qidian.dto.SeriesTypeVo" >
+        <id column="year_moth_id" property="yearMothId" jdbcType="INTEGER" />
+        <result column="projectId" property="projectId" jdbcType="INTEGER" />
+        <result column="year_month_char" property="yearMonthChar" jdbcType="VARCHAR" />
+        <result column="msg" property="msg" jdbcType="VARCHAR" />
+        <association property="tContents" column="{yearMothId=year_moth_id,msg=msg, projectId=projectId}"  select="org.qidian.dao.smartkit.TContentsMapper.selectBySeriesMod" />
+    </resultMap>
+    
+   	<resultMap id="BaseResultMapDocDto" type="org.qidian.dto.SeriesTypeVo" >
+        <id column="year_moth_id" property="yearMothId" jdbcType="INTEGER" />
+        <result column="projectId" property="projectId" jdbcType="INTEGER" />
+        <result column="year_month_char" property="yearMonthChar" jdbcType="VARCHAR" />
+        <result column="msg" property="msg" jdbcType="VARCHAR" />
+        <result column="dataType" property="dataType" jdbcType="VARCHAR" />
+        <association property="tContents" column="{yearMothId=year_moth_id,msg=msg, projectId=projectId,dataType=dataType}"  select="org.qidian.dao.smartkit.TContentsMapper.selectBySeriesModDoc" />
+    </resultMap>
+   	<resultMap id="BaseResultMapTeclgDto" type="org.qidian.dto.SeriesTypeVo" >
+        <id column="year_moth_id" property="yearMothId" jdbcType="INTEGER" />
+        <result column="projectId" property="projectId" jdbcType="INTEGER" />
+        <result column="year_month_char" property="yearMonthChar" jdbcType="VARCHAR" />
+        <result column="msg" property="msg" jdbcType="VARCHAR" />
+        <result column="dataType" property="dataType" jdbcType="VARCHAR" />
+        <association property="tContents" column="{yearMothId=year_moth_id,msg=msg, projectId=projectId,dataType=dataType}"  select="org.qidian.dao.smartkit.TContentsMapper.selectBySeriesModTeclg" />
+    </resultMap>
+    
+
+    <sql id="Base_Column_List" >
+        year_moth_id, year_month_char
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select 
+        <include refid="Base_Column_List" />
+        from year_month_type
+        where year_moth_id = #{yearMothId,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from year_month_type
+        where year_moth_id = #{yearMothId,jdbcType=INTEGER}
+    </delete>
+    
+
+    <select id="selectByYearMonth"  resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select 
+     <include refid="Base_Column_List" />
+        from year_month_type
+        where year_month_char = #{yearMothchar,jdbcType=INTEGER}
+    </select>
+    
+    <select id="selectByYearMod" resultMap="BaseResultMapDto" parameterType="org.qidian.dto.SeriesTypeVo" >
+        select 
+         year_moth_id, `year_month_char` , #{projectId} as projectId, #{msg} as msg
+        from year_month_type order by  year_month_char desc
+    </select>
+    
+    <select id="selectByYearModDoc" resultMap="BaseResultMapDocDto" parameterType="org.qidian.dto.SeriesTypeVo" >
+        select 
+         year_moth_id, `year_month_char` , #{projectId} as projectId, #{msg} as msg, #{dataType} as dataType
+        from year_month_type order by  year_month_char desc
+    </select>
+    <select id="LookListTeclgView" resultMap="BaseResultMapTeclgDto" parameterType="org.qidian.dto.SeriesTypeVo" >
+        select 
+         year_moth_id, `year_month_char` , #{projectId} as projectId, #{msg} as msg, #{dataType} as dataType
+        from year_month_type order by  year_month_char desc
+    </select>
+    
+
+
+    <insert id="insert" parameterType="org.qidian.modal.smartkit.YearMonthType"  keyProperty="yearMothId"   keyColumn="year_moth_id" useGeneratedKeys="true">
+        insert into year_month_type (year_moth_id, year_month_char)
+        values (#{yearMothId,jdbcType=INTEGER}, #{yearMonthChar,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="org.qidian.modal.smartkit.YearMonthType" >
+        insert into year_month_type
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="yearMothId != null" >
+                year_moth_id,
+            </if>
+            <if test="yearMonthChar != null" >
+                year_month_char,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="yearMothId != null" >
+                #{yearMothId,jdbcType=INTEGER},
+            </if>
+            <if test="yearMonthChar != null" >
+                #{yearMonthChar,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="org.qidian.modal.smartkit.YearMonthType" >
+        update  year_month_type
+        <set >
+            <if test="yearMonthChar != null" >
+                year_month_char = #{yearMonthChar,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where year_moth_id = #{yearMothId,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="org.qidian.modal.smartkit.YearMonthType" >
+        update  year_month_type
+        set year_month_char = #{yearMonthChar,jdbcType=VARCHAR}
+        where year_moth_id = #{yearMothId,jdbcType=INTEGER}
+    </update>
+</mapper>

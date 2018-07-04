@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+ <header th:replace="admin/header::headerFragment('详情','publish')"></header>
+<link rel="stylesheet" type="text/css" href="../../static/admin/css/index.css" />
+<body style="background-color: #F5F6FA;">
+    <div class="if-detail-box">
+        <div class="if-detail-head" th:if="${flag == false}">
+            <span style="font-size: 18px;">接口: </span><input type="text" name="" value="学习班列表" style="margin-right:40px;"  th:value="${tContents.title}" readonly="readonly"/>
+            <span style="font-size: 18px;">URL: </span><input type="text" name=""  th:value="${tContents.url}" readonly="readonly"/>
+            <br/>
+            <br/>
+            <span th:text="${userInfo.name}"></span><span th:text="${tContents.created}"></span>
+        </div>
+        <div class="if-detail-head" th:if="${flag == true}">
+        	<span style="font-size: 30px; font-weight:bold; color: black;" th:text="${tContents.title}"></span>
+        	<span th:text="${userInfo.name}"></span><span th:text="${tContents.created}"></span>
+        </div>
+      	  <div class="if-detail-content"  id="if-detail-content">
+		<textarea style="height: 450px" autocomplete="off" id="text" name="text" class="markdown-textarea" th:utext="${tContents.content}"></textarea>
+		</div>
+    </div>
+</body>
+   <script th:src="@{/static/jquery.min.js}"></script>
+<script th:src="@{/static/editor/lib/marked.min.js}"></script>
+<script th:src="@{/static/editor/lib/prettify.min.js}"></script>
+<script th:src="@{/static/editor/editormd.min.js}"></script>
+<script type="text/javascript">
+editormd.markdownToHTML("if-detail-content");
+</script>
+</html>

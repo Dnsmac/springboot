@@ -1,0 +1,191 @@
+    <div class="watch-content">
+    <input  type="hidden"  th:value="${seriesId}" id="seriesId" />
+    <input  type="hidden"  th:value="${projectId}" id="projectId" />
+    <input  type="hidden"  id="cid" />
+        <!-- -->
+<!--         <div class="row gl-class"> -->
+<!--             <div class="col-lg-1" style="background-color: white;margin-right:17px;height:54px;width:48px"></div> -->
+<!--             <div class="glblock-name col-lg-2 text-v">新增</div> -->
+<!--         </div> -->
+
+
+        <div class="row gl-content ">
+            <form class="form-inline add-form">
+                <div class="form-group add-if-group col-lg-2" style="padding-right: 0px;padding-left: 0px;">
+                    <label for="platform">选择类型: </label>
+                    <select class="form-control  addIf" id="add-if" style="width: calc(100% - 65px);">
+                        <option value="api">api</option>
+                        <option value="wd">文档</option>
+                        <option value="gf">规范</option>
+                        <option value="js">技术总结</option>
+                    </select>
+                    <select class="selectpicker"  data-style="btn-default">
+                        </select>
+                </div>
+                <div class="form-group slect-type col-lg-2">
+                    <select class="form-control   addType  "   id="add-type" style="width:100%">
+                        <option  type ="12" ></option>
+                        <option type ="2"  value="人人都是产品经理"   style="display: none">人人都是产品经理</option>
+                        <option type ="2"  value="秒聘网" style="display: none">秒聘网</option>
+                        <option type ="2"  value="PassPort" style="display: none">PassPort</option>
+                        <option type ="2"  value="起点学院" style="display: none">起点学院</option>
+                        
+                         <option type ="1"  value="java" style="display: none">java</option>
+		                <option type ="1"  value="安卓" style="display: none">安卓</option>
+		                <option type ="1"  value="ios" style="display: none">ios</option>
+		                <option type ="1"  value="前端" style="display: none">前端</option>
+		                <option type ="1"  value="设计" style="display: none">设计</option>
+                    </select>
+                </div>
+                <div class="col-lg-3">
+                    <input type="text" class="form-control"  name="title" value=""  placeholder="请输入标题(必填)"  style="width:100%" />
+                </div>
+                
+                <div class="col-lg-3">
+                    <input type="text" class="form-control" name="url"  value=""  placeholder="接口访问URL(API必填)"  style="width:100%" />
+                </div>
+            </form>
+                <div id="test-editormd"   class="big-textarea col-lg-12" style="height:900px;margin-top: 47px;border:1px solid lightgrey">
+            	        <textarea id="text" class="editormd-html-textarea" name="text">
+[TOC]
+
+## 接口说明
+	（tab键）
+	说明 ！！！！
+	说明！！！！
+		说明 ！！！！
+	说明！！！！
+
+###  请求示例如下：
+```
+http://localhost:8080/activitiesFromData/activitiesList.htm?Phone=120
+```
+
+
+
+## 参数说明
+
+### 请求参数
+参数          | 类型     | 是否必须       | 参数说明                 | 描述
+--------     | ---      | ------        | ------                   | ------
+createTime   | String   |  是           |  请求时间戳               | 时间戳,采用yyyy-MM-dd  的形式，前后5分钟内的请求为有效请求
+Phone        | string   |  是           | 手机号码                  | 求情的手机号码 根据手机去匹配去查看手机归属地 
+Pipe         | dubbo    |  否           |                           | 
+
+
+
+
+
+
+### 返回参数
+
+
+  参数名    | 类型             |参数说明       |描述
+--------    | ------         | ------         |------
+ CODE 		| int  			 |状态码		   |状态码。200为成功，其余为失败 
+ RESULT 	| json 			 | 结果           |返回的信息
+ city 		| string 		 | 城市           |城市
+popConfigList  | List《json》  |弹窗信息        |信息
+ id  		| int 			 |弹窗id          |主键标识
+ state     | int		     | 状态           |状态说明
+
+#### state 说明
+
+| 类型  |  描述 |
+| ------------ | ------------ |
+| 0  |  未启用 |
+| 1  |  启用 |
+| -1  | 废弃 |
+-------------------------------------
+
+
+###返回参数例子
+
+[json格式化](https://www.bejson.com/ "json格式化")
+
+    {
+    	"RESULT": {
+    		"city": "深圳",
+    		"popConfigList": [{
+    			"id": 39,
+    			"popName": "提效率不延期–如何提高团队工作效率",
+    			"popPage": 0,
+    			"os": 0,
+    			"img": "https://static.woshipm.com/APP_POP_20180408105223_82658.jpg",
+    			"targetPage": {
+    				"type": 0,
+    				"id": 979099,
+    				"url": ""
+    			},
+    			"priority": 3,
+    			"frequency": 0,
+    			"targetUser": {
+    				"isNew": 1,
+    				"isLogin": 0,
+    				"isAuthor": 0
+    			},
+    			"targetVersion": "all",
+    			"targetCity": "深圳市,广州市,惠州市,东莞市",
+    			"showCount": {
+    				"android": 0,
+    				"ios": 253
+    			},
+    			"clickCount": {
+    				"android": 0,
+    				"ios": 21
+    			},
+    			"runStartTime": 1523154558000,
+    			"runStopTime": 1523500219000,
+    			"updateTime": 1523155952908,
+    			"state": 1,
+    			"targetCityType": 1
+    		}]
+    	},
+    	"CODE": 200
+    }
+</textarea>
+ </div>           
+            <div style="margin-top: 40px;">
+                <button class=" cancel-btn" data-toggle="modal" data-target="#cancelModal">取消</button>
+                <button class=" save-btn" data-toggle="modal" data-target="#saveModal">保存</button>
+            </div>
+        </div>
+    </div>
+
+<div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="add-save" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="add-save">确认保存?</h4>
+            </div>
+            <div class="modal-body">
+                <p>保存后系统将会保存您所做的修改</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary"  th:onclick="'javascript:saveHtml(\''+${categoryType.categoryName}+'\')' ">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="add-cancel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="add-cancel">确认返回?</h4>
+            </div>
+            <div class="modal-body">
+                <p>返回后系统将不会保存您所做的修改</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<script th:src="@{/static/admin/js/editor.js}"></script>

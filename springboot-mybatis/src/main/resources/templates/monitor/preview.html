@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>异常详情</title>
+</head>
+<body>
+	
+	<div id="divContent" style="text-align:left;">
+		<span th:text="${content}"></span>
+	</div>
+</body>
+
+<script type="text/javascript">
+		var div=document.getElementById("divContent");
+		var content=div.innerHTML;
+		div.innerHTML=content.replace(/[\r\n]/g, "<br />"); //replace替换标签
+</script>
+</html>

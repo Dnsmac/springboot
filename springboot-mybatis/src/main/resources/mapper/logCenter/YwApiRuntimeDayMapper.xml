@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qidian.dao.logCenter.YwApiRuntimeDayMapper" >
+
+    <resultMap id="BaseResultMap" type="org.qidian.modal.logCenter.YwApiRuntimeDay" >
+        <result column="logDate" property="logDate" jdbcType="DECIMAL" />
+        <result column="url" property="url" jdbcType="VARCHAR" />
+        <result column="count" property="count" jdbcType="INTEGER" />
+        <result column="maxUseTime" property="maxUseTime" jdbcType="INTEGER" />
+        <result column="aveUseTime" property="aveUseTime" jdbcType="INTEGER" />
+        <result column="platType" property="platType" jdbcType="INTEGER" />
+    </resultMap>
+
+	<sql id="Base_Column_List" >
+        logDate, url, count, platType, maxUseTime, aveUseTime
+    </sql>
+    
+    <select id="selectSelective" resultMap="BaseResultMap" parameterType="org.qidian.modal.logCenter.YwApiRuntimeDay" >
+        select 
+        <include refid="Base_Column_List" />
+        from yw_api_runtime_day where 1=1
+       	<if test="platType != -1"> AND platType = #{platType} </if>
+       	<if test="logDate != 0"> AND logDate = #{logDate} </if>
+       	order by logDate DESC, aveUseTime DESC
+    </select>
+    
+    <select id="selectCount" resultType="Integer" parameterType="org.qidian.modal.logCenter.YwApiRuntimeDay" >
+        select count(*) from yw_api_runtime_day where 1=1
+       	<if test="platType != -1"> AND platType = #{platType} </if>
+       	<if test="logDate != 0"> AND logDate = #{logDate} </if>
+    </select>
+    
+    <insert id="insert" parameterType="org.qidian.modal.logCenter.YwApiRuntimeDay" >
+        insert into yw_api_runtime_day (logDate, url, count, 
+            maxUseTime, aveUseTime, platType
+            )
+        values (#{logDate,jdbcType=DECIMAL}, #{url,jdbcType=VARCHAR}, #{count,jdbcType=INTEGER}, 
+            #{maxUseTime,jdbcType=INTEGER}, #{aveUseTime,jdbcType=INTEGER}, #{platType,jdbcType=INTEGER}
+            )
+    </insert>
+
+    <insert id="insertSelective" parameterType="org.qidian.modal.logCenter.YwApiRuntimeDay" >
+        insert into yw_api_runtime_day
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="logDate != null" >
+                logDate,
+            </if>
+            <if test="url != null" >
+                url,
+            </if>
+            <if test="count != null" >
+                count,
+            </if>
+            <if test="maxUseTime != null" >
+                maxUseTime,
+            </if>
+            <if test="aveUseTime != null" >
+                aveUseTime,
+            </if>
+            <if test="platType != null" >
+                platType,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="logDate != null" >
+                #{logDate,jdbcType=DECIMAL},
+            </if>
+            <if test="url != null" >
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="count != null" >
+                #{count,jdbcType=INTEGER},
+            </if>
+            <if test="maxUseTime != null" >
+                #{maxUseTime,jdbcType=INTEGER},
+            </if>
+            <if test="aveUseTime != null" >
+                #{aveUseTime,jdbcType=INTEGER},
+            </if>
+            <if test="platType != null" >
+                #{platType,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+</mapper>

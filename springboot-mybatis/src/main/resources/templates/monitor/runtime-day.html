@@ -1,0 +1,81 @@
+<div class="container-fluid qd-vip">
+    <div class="qd-head row">
+        <div class="qd-icon s-icon col-lg-1">
+            <!-- <i class="fa fa-file-text-o"></i> --><img src="../../static/admin/images/vip.png" width="40" height="40" alt=""/></div>
+        <div class="col-lg-5 text-v title-type">监控--全平台接口请求超时数据</div>
+    </div>
+    <div class="watch-content">
+        <div class="row gl-content" style="padding-top:30px">
+            <div class="form-inline">
+                <div class="form-group platform-group">
+                    <label for="platform">平台: </label>
+                    <select class="form-control" id="platform" name="msg">
+                        <option  value="-1" th:selected="${msg eq '-1'}" >全部</option>
+					 	<option  value="0" th:selected="${msg eq '0'}">passport</option>
+					 	<option value="1" th:selected="${msg eq '1'}">人人</option>
+					 	<option value="2" th:selected="${msg eq '2'}">天天问</option>
+					 	<option value="3" th:selected="${msg eq '3'}">活动</option>
+					 	<option value="4" th:selected="${msg eq '4'}">起点</option>
+					 	<option value="5" th:selected="${msg eq '5'}">秒聘</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>时间: </label>
+                    <span th:if="${dataType ne 'all'}">
+                        <input th:value="${dataType}" type="text" placeholder="点击选择时间" class="form_datetime form-control watch-time" id="dateTime"/>
+                    </span>
+                    <span th:if="${dataType eq 'all'}">
+                        <input type="text" placeholder="点击选择时间" class="form_datetime form-control watch-time" id="dateTime"/>
+                    </span>
+                </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="form-group">
+                	<input id="" type="button" class="btn btn-primary"  th:onclick="'javascript:query('+${projectId}+')'" value="查询"/>
+                </div>
+            </div>
+            <table class="table table-hover table-bordered text-center watch-table">
+                <thead>
+                    <tr>
+                        <th>平台名称</th>
+                        <th>日志日期</th>
+                        <th>接口</th>
+                        <th>异常次数</th>
+                        <th>最长反应事件</th>
+                        <th>平反应映时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<li  th:each="item : ${list}">
+                		<tr>
+	                        <td th:if="${item.platType == 0}">passport</td>
+	                        <td th:if="${item.platType == 1}">人人</td>
+	                        <td th:if="${item.platType == 2}">天天问</td>
+	                        <td th:if="${item.platType == 3}">活动</td>
+	                        <td th:if="${item.platType == 4}">起点</td>
+	                        <td th:if="${item.platType == 5}">秒聘</td>
+	                        <td th:text="${item.logDate}"></td>
+	                        <td th:text="${item.url}"></td>
+	                        <td th:text="${item.count}"></td>
+	                        <td th:text="${item.maxUseTime}"></td>
+	                        <td th:text="${item.aveUseTime}"></td>
+                    	</tr>
+                	</li>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="watch-pagination">
+	<div th:replace="admin/header::pageHtml(${pageNow},'/admin/view/monitor/'+${projectId})" th:style="width: 100%;"></div>
+</div>
+<script th:src="@{/static/admin/js/monitor.js}"></script>
+<script th:inline="javascript">
+jQuery(document).ready(function($) {
+    $(".form_datetime").datetimepicker({
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        language: "zh-CN",
+        todayBtn: true
+    });
+
+});
+</script>

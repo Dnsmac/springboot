@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <header th:replace="admin/header::headerFragment('编辑','publish')"></header>
+</head>
+<body>
+
+    <div class="watch-content">
+	<input th:attr="type=hidden" id="cid"   th:value="${tContents.cid}" />
+	<input th:attr="type=hidden" id="seriesId" th:value="${tContents.seriesid}" />
+	<input th:attr="type=hidden" id="projectId" th:value="${tContents.projectId}"/>
+	<input type="hidden"   id="projectIdType"  th:value="${projectIdType}"/>
+
+        <div class="row gl-content ">
+            <form class="form-inline add-form">
+                <div class="form-group add-if-group col-lg-2" style="padding-right: 0px;padding-left: 0px;">
+                    <label for="platform">选择类型: </label>
+                    <select class="form-control  addIf" id="add-if" style="width: calc(100% - 65px);">
+                        <option value="api" th:selected="${categoryType.categoryName eq 'API'}">api</option>
+                        <option value="wd" th:selected="${categoryType.categoryName eq '文档'}">文档</option>
+                        <option value="gf" th:selected="${categoryType.categoryName eq '规范'}">规范</option>
+                        <option value="js" th:selected="${categoryType.categoryName eq '技术'}">技术总结</option>
+                    </select>
+                </div>
+                <div class="form-group slect-type col-lg-2">
+                    <select class="form-control   addType  "   id="add-type" style="width:100%">
+                    	<option  type ="12"   style="display: none"></option>
+                        <option type ="2"  value="人人都是产品经理" style="display: none" th:selected="${tContents.contentType eq '人人都是产品经理'}">人人都是产品经理</option>
+                        <option type ="2"  value="秒聘网" style="display: none" th:selected="${tContents.contentType eq '秒聘网'}">秒聘网</option>
+                        <option type ="2"  value="PassPort" style="display: none" th:selected="${tContents.contentType eq 'Passport'}">PassPort</option>
+                        <option type ="2"  value="起点学院" style="display: none" th:selected="${tContents.contentType eq '起点学院'}">起点学院</option>
+                        
+                         <option type ="1"  value="java" style="display: none" th:selected="${tContents.contentType eq 'java'}">java</option>
+		                <option type ="1"  value="安卓" style="display: none" th:selected="${tContents.contentType eq '安卓'}">安卓</option>
+		                <option type ="1"  value="ios" style="display: none" th:selected="${tContents.contentType eq 'ios'}">ios</option>
+		                <option type ="1"  value="前端" style="display: none" th:selected="${tContents.contentType eq '前端'}">前端</option>
+		                <option type ="1"  value="设计" style="display: none" th:selected="${tContents.contentType eq '设计'}">设计</option>
+                    </select>
+                </div>
+                <div class="col-lg-3">
+                    <input type="text" class="form-control"  name="title"  th:value="${tContents.title}"  placeholder="请输入标题(必填)"  style="width:100%" />
+                </div>
+                
+                <div class="col-lg-3">
+                    <input type="text" class="form-control" name="url"  th:value="${tContents.url}"  placeholder="接口访问URL(API必填)"  style="width:100%" />
+                </div>
+            </form>
+                <div id="test-editormd"   class="big-textarea col-lg-12" style="height:900px;margin-top: 47px;border:1px solid lightgrey">
+            	        <textarea id="text" class="editormd-html-textarea" name="text"  th:utext="${tContents.content}">
+					
+						</textarea>
+					 </div>           
+            <div style="margin-top: 40px;">
+                <button class=" cancel-btn" data-toggle="modal" data-target="#cancelModal">取消</button>
+                <button class=" save-btn" data-toggle="modal" data-target="#saveModal">保存</button>
+            </div>
+        </div>
+    </div>
+
+<div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="add-save" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="add-save">确认保存?</h4>
+            </div>
+            <div class="modal-body">
+                <p>保存后系统将会保存您所做的修改</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary"  th:onclick="'javascript:saveHtml(\''+${categoryType.categoryName}+'\')' ">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="add-cancel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="add-cancel">确认返回?</h4>
+            </div>
+            <div class="modal-body">
+                <p>返回后系统将不会保存您所做的修改</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary"   th:onclick="'javascript:window.close()'" >确定</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+</body>
+<script th:src="@{/static/admin/js/editor.js}"></script>
+
+</html>

@@ -1,0 +1,65 @@
+<div class="container-fluid qd-vip">
+    <div class="qd-head row">
+        <div class="qd-icon s-icon col-lg-1 tect-icon" style=""><i class="fa fa-file-text-o" style="transform:translateX(-3px)"></i></div>
+        <div class="col-lg-2 text-v title-type" th:text="${project.projectName}">技术总结</div>
+                <input type="hidden" name="projectid"  id="projectid"   th:value="${projectId}"  />
+        <div class="col-lg-4 sch-box">
+            <input type="text" name="msg"  th:value="${msg}" placeholder="请输入硬要搜索的内容" class="form-control head-sch" />
+            <i class="fa fa-search  faSearch"></i>
+        </div>
+		<div class="add-if-type-btn col-lg-2  text-right">
+            <button class="btn " data-toggle="modal" th:onclick="'javascript:addEditView(0,'+${projectId}+')'"><em>+</em>新增</button>
+        </div>
+        <div class="col-lg-2 tect-type ">
+            <select name="" class="form-control" value="" id="order">
+                <option  th:value="${dataType}"  th:text="${dataType}"></option>
+                <option value="all"  th:if="${dataType != '全部'}">全部</option>
+                 <option value="java" th:if="${dataType !='java'}">java</option>
+                <option value="安卓" th:if="${dataType !='安卓'}">安卓</option>
+                <option value="ios" th:if="${dataType !='ios'}">ios</option>
+                <option value="前端" th:if="${dataType !='前端'}">前端</option>
+                <option value="设计" th:if="${dataType !='设计'}">设计</option>
+            </select>
+        </div>
+        <div class="col-lg-2 auther-type ">
+            <select name="" class="form-control auther-order text-center teclgSearch" id="" value="" style="background-color:#F5F6FA;color:#999;font-size:14px">
+                   <option th:value="${sort==0? 0:1}" th:text="${sort==0 ? '按时间排序' : '按作者排序' }"></option>
+                <option  th:value="${sort==1? 0:1}"  th:text="${sort==1? '按时间排序' : '按作者排序' }"></option>
+            </select>
+        </div>
+    </div>
+    
+  
+    <div class="tact-wrap">
+       <div th:each="m,iterStat  : ${vo}">
+        <!-- 月份 -->
+        <div class="row gl-class">
+          	<div class="col-lg-1"   style="margin-right: 17px; height: 54px;"><img src="../../static/admin/images/tealg-icon.png" /></div>
+            <div class="glblock-name col-lg-2 text-v"  th:text="${m.yearMonthChar}"></div>
+            <div class="gl-slide col-lg-2">
+ 				   <span class="trst"  th:if="${iterStat.index !=0 }"  ><img src="../../static/admin/images/sildedown.png" width="14" height="14" /><em>展开</em></span>
+			  		 <span class=""  th:if="${iterStat.index ==0 }" ><img src="../../static/admin/images/slideup.png" width="14" height="14" /><em>收起</em></span>
+            </div>
+        </div>
+        <div class="row gl-content tect-content"    >
+            <div class="col-lg-3 tect-wrap" th:each="list,stat : ${m.tContents}">
+                <div class="gl-item tact-item" th:onmouseover="'javascript:t_mouseover(this)'"  th:onmouseout="'javascript:t_mouseout(this)'">
+<!--                 <div class="gl-item tact-item"  onmouseover="t_mouseover(this)"  onmouseout="t_mouseout(this)"> -->
+                    <div  th:onclick="'javascript:hrefWindow('+${list.cid}+')' "  class="tect-head trst text-left"  th:text="${list.title}"></div>
+                    <div class="tect-info">
+                        <div class="auther-icon auther-l"  th:text="${list.userInfo.name}">洛</div>
+                        <div class="auther-name">作者: <em  th:text="${list.userInfo.name}" style="display:inline-block; transform: translateY(4px);width:80px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"></em></div>
+                        <div  class="auth-time gl_hide"   th:text="${list.created}"></div>
+                        <div th:onclick="'javascript:openWindow('+${list.cid}+')' "  class="auth-edit  gl_show"  style="display: none;" >编辑</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       </div>
+        
+    </div>
+</div>
+
+<script th:src="@{/static/admin/js/teclg.js}"></script>
+<script type="text/javascript">
+</script>

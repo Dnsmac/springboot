@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="headerFragment(title,active)">
+    <meta charset="utf-8"/>
+    <title><th:block th:text="${title!=null?title:'技术部内网'}"></th:block></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta content="Coderthemes" name="author"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+	<script th:src="@{/static/bootstrap/js/jquery-2.1.1.min.js}"></script>
+	<script th:src="@{/static/bootstrap/js/bootstrap.min.js}"></script>
+	<script th:src="@{/static/bootstrap/js/bootstrap-select.js}"></script>
+	<script th:src="@{/static/bootstrap/js/bootstrap-datetimepicker.min.js}"></script>
+	<script th:src="@{/static/editor/editormd.min.js}"></script>
+	<script th:src="@{/static/base.js}"></script>
+	<script th:src="@{/static/admin/js/editor.js}"></script>
+	<script th:src="@{//cdn.bootcss.com/limonte-sweetalert2/6.4.1/sweetalert2.min.js}"></script>
+		<script th:src="@{/static/simplePaging.js}"></script>
+	 	<link th:href="@{/static/admin/css/simplePaging.css}" rel="stylesheet"/>	
+     <link th:href="@{//cdn.bootcss.com/limonte-sweetalert2/6.4.1/sweetalert2.min.css}" rel="stylesheet"/>
+    <link th:href="@{/static/editor/css/editormd.css}" rel="stylesheet"/>
+	<link th:href="@{/static/editor/css/style.css}" rel="stylesheet"/>	
+   	<link th:href="@{/static/editor/css/editormd.preview.min.css}" rel="stylesheet"/>	
+	<link th:href="@{/static/admin/css/font-awesome.css}" rel="stylesheet"/>	
+
+   	<link th:href="@{/static/bootstrap/css/bootstrap.css}" rel="stylesheet"/>	
+   	<link th:href="@{/static/admin/css/index.css?v=21}" rel="stylesheet"/>	
+   	<link th:href="@{/static/bootstrap/css/bootstrap-datetimepicker.min.css}" rel="stylesheet"/>	
+   	<link th:href="@{/static/admin/css/my_custom_style.css}" rel="stylesheet"/>	
+   	<link th:href="@{/static/bootstrap/css/bootstrap-select.css}" rel="stylesheet"/>	
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    
+</head>
+	<div th:fragment="left-body">	
+		 <div class="container-fluid">
+        <div class="row " >
+            <div class="act-nav">
+                <div class="logo">技术部内网</div>
+                <div class="user-avter m-md-b" th:text="${#strings.substring(userInfo.name,0,1)}"></div>
+                <div class="user-name text-center" th:text="${userInfo.userName}"></div>
+                <ul class="act">
+                    <li  th:each="cat : ${cate}">
+                        <div>
+                            <div class="child-title">
+                                <img  th:src="${cat.categoryImg}"  width="14" height="14" alt="" class="icon-f"   />
+                                <span  th:text="${cat.categoryName}"></span>
+                                <img src="../../static/admin/images/jx.png" alt="" width="12" height="2" class="icon-l"  />
+                            </div>
+                            <ul class="child-ul"  style="display: none;">
+                                <li  th:each="pro : ${cat.projectTitle}"   th:attr="categoryUrl=${cat.categoryUrl}"   th:onclick="'javascript:jump('+${pro.projectId}+',this)' " >
+                                    <div class="child-item">
+                                        <span th:text="${pro.projectName}"></span><img src="../../static/admin/images/more-icon@2x.png" alt="" width="6" height="10"  />
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                
+<!--                 <div class="add-modal" data-toggle="modal" data-target="#addModal"> -->
+<!--                     <span>+</span>添加模块 -->
+<!--                 </div> -->
+            </div>
+        </div>
+        
+        
+        <!-- 添加模块弹窗 -->
+        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="add-block" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title text-center" id="add-block">新增模块</h4>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" >保存</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+        
+        <!-- 添加接口类型弹窗 -->
+        <div class="modal fade" id="addIfModal" tabindex="-1" role="dialog" aria-labelledby="add-if" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="add-if">新增接口类型</h4>
+                    </div>
+                    <div class="modal-body">
+                        
+                            <p>模块名称</p>
+                        <div><input type="text" class="form-control"   id="seriesName"  name=""/></div>
+                             <p style=" margin-top: 10px; ">模块图片url</p>
+                        <div><input type="text" class="form-control"   id="seriesImg"  name=""/></div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary"  th:onclick="'javascript:saveSeriesType()'">保存</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+
+        </div>
+    </div>
+	
+</div>
+
+<div th:fragment="pageHtml(pageNow,url)">
+    <div class="simplePaging"  ></div>
+    <script th:inline="javascript">
+    $(".simplePaging").simplePaging({
+        allPage:[[${pageTotal}]],
+        showPage: 9,
+        startPage: 1,
+        initPage: [[${pageNow}]],
+        initPageClick:false,
+        showTurnTo: true,
+        animateType: "jumpy",
+        animationTime: 300,
+        callBack: function (num) {
+            var toUrl = [[${url}]];
+            $.get(
+            		toUrl,
+        			{"msg":[[${msg}]], "dataType":[[${dataType}]],"pageNow":num, "isDeal":[[${isDeal}]]},
+        			function(data){
+        				$(".content").html(data);
+        			});			
+        }
+    });
+    
+    
+    
+    </script>
+	
+</div>
+
+
+</html>

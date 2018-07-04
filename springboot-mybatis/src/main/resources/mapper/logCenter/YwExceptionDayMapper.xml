@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qidian.dao.logCenter.YwExceptionDayMapper" >
+
+    <resultMap id="BaseResultMap" type="org.qidian.modal.logCenter.YwExceptionDay" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="logDate" property="logDate" jdbcType="DECIMAL" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="count" property="count" jdbcType="INTEGER" />
+        <result column="platType" property="platType" jdbcType="INTEGER" />
+        <result column="content" property="content" jdbcType="LONGVARCHAR" />
+        <result column="dealTime" property="dealTime" jdbcType="DECIMAL" />
+        <result column="processor" property="processor" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, logDate, type, count, platType, content, dealTime, processor
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select 
+        <include refid="Base_Column_List" />
+        from yw_exception_day
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <select id="selectSelective" resultMap="BaseResultMap" parameterType="java.util.Map" >
+        select 
+        <include refid="Base_Column_List" />
+        from yw_exception_day where 1=1
+       	<if test="platType != -1"> AND platType = #{platType} </if>
+       	<if test="logDate != 0"> AND logDate = #{logDate} </if>
+       	<if test="dealTime == 0">AND dealTime = 0</if>
+       	<if test="dealTime == 1">AND dealTime != 0</if>
+       	order by id desc
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from yw_exception_day
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <delete id="deleteByLogDate" parameterType="java.lang.Long" >
+        delete from yw_exception_day
+        where logDate &lt;= #{logDate}
+    </delete>
+
+ 	<select id="selectCount" resultType="Integer" parameterType="org.qidian.modal.logCenter.YwExceptionDay" >
+        select count(*) from yw_exception_day where 1=1
+       	<if test="platType != -1"> AND platType = #{platType} </if>
+       	<if test="logDate != 0"> AND logDate = #{logDate} </if>
+       	<if test="dealTime == 0">AND dealTime = 0</if>
+       	<if test="dealTime == 1">AND dealTime != 0</if>
+    </select>
+    
+    <insert id="insert" parameterType="org.qidian.modal.logCenter.YwExceptionDay" >
+        insert into yw_exception_day (id, logDate, type, 
+            count, platType, content, 
+            dealTime, processor)
+        values (#{id,jdbcType=INTEGER}, #{logDate,jdbcType=DECIMAL}, #{type,jdbcType=VARCHAR}, 
+            #{count,jdbcType=INTEGER}, #{platType,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}, 
+            #{dealTime,jdbcType=DECIMAL}, #{processor,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="org.qidian.modal.logCenter.YwExceptionDay" >
+        insert into yw_exception_day
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="logDate != null" >
+                logDate,
+            </if>
+            <if test="type != null" >
+                type,
+            </if>
+            <if test="count != null" >
+                count,
+            </if>
+            <if test="platType != null" >
+                platType,
+            </if>
+            <if test="content != null" >
+                content,
+            </if>
+            <if test="dealTime != null" >
+                dealTime,
+            </if>
+            <if test="processor != null" >
+                processor,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="logDate != null" >
+                #{logDate,jdbcType=DECIMAL},
+            </if>
+            <if test="type != null" >
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="count != null" >
+                #{count,jdbcType=INTEGER},
+            </if>
+            <if test="platType != null" >
+                #{platType,jdbcType=INTEGER},
+            </if>
+            <if test="content != null" >
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="dealTime != null" >
+                #{dealTime,jdbcType=DECIMAL},
+            </if>
+            <if test="processor != null" >
+                #{processor,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="org.qidian.modal.logCenter.YwExceptionDay" >
+        update yw_exception_day
+        <set >
+            <if test="logDate != null" >
+                logDate = #{logDate,jdbcType=DECIMAL},
+            </if>
+            <if test="type != null" >
+                type = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="count != null" >
+                count = #{count,jdbcType=INTEGER},
+            </if>
+            <if test="platType != null" >
+                platType = #{platType,jdbcType=INTEGER},
+            </if>
+            <if test="content != null" >
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="dealTime != null" >
+                dealTime = #{dealTime,jdbcType=DECIMAL},
+            </if>
+            <if test="processor != null" >
+                processor = #{processor,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="org.qidian.modal.logCenter.YwExceptionDay" >
+        update yw_exception_day
+        set logDate = #{logDate,jdbcType=DECIMAL},
+            type = #{type,jdbcType=VARCHAR},
+            count = #{count,jdbcType=INTEGER},
+            platType = #{platType,jdbcType=INTEGER},
+            content = #{content,jdbcType=LONGVARCHAR},
+            dealTime = #{dealTime,jdbcType=DECIMAL},
+            processor = #{processor,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

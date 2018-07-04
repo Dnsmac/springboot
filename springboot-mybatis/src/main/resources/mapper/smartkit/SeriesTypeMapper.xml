@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qidian.dao.smartkit.SeriesTypeMapper" >
+
+    <resultMap id="BaseResultMap" type="org.qidian.modal.smartkit.SeriesType" >
+        <id column="series_id" property="seriesId" jdbcType="INTEGER" />
+        <result column="project_id" property="projectId" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="series_img" property="seriesImg" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    
+    <resultMap id="BaseResultMapDto" type="org.qidian.dto.SeriesTypeVo" >
+        <id column="series_id" property="seriesId" jdbcType="INTEGER" />
+        <result column="project_id" property="projectId" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="msg" property="msg" jdbcType="VARCHAR" />
+           <result column="series_img" property="seriesImg" jdbcType="VARCHAR" />
+        <association property="tContents" column="{seriesId=series_id,msg=msg}"  select="org.qidian.dao.smartkit.TContentsMapper.selectBySeriesId" />
+    </resultMap>
+    
+    
+
+    <sql id="Base_Column_List" >
+        series_id, project_id, name, series_img
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select  series_id
+        <include refid="Base_Column_List" />
+        from series_type 
+        where series_id = #{seriesId,jdbcType=INTEGER}
+    </select>
+    
+    
+    <select id="selectByprojectId" resultMap="BaseResultMapDto" parameterType="org.qidian.dto.SeriesTypeVo" >
+        select 
+           series_img, series_id, project_id, name, #{msg} as msg
+        from series_type
+        where project_id = #{projectId,jdbcType=INTEGER}
+    </select>
+    
+    
+    
+    
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from series_type
+        where series_id = #{seriesId,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="org.qidian.modal.smartkit.SeriesType" >
+        insert into series_type (series_id, project_id, name, series_img
+            )
+        values (#{seriesId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{seriesImg,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <insert id="insertSelective" parameterType="org.qidian.modal.smartkit.SeriesType" >
+        insert into series_type
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="seriesId != null" >
+                series_id,
+            </if>
+            <if test="projectId != null" >
+                project_id,
+            </if>
+            <if test="name != null" >
+                name,
+            </if>
+            <if test="seriesImg != null" >
+                series_img,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="seriesId != null" >
+                #{seriesId,jdbcType=INTEGER},
+            </if>
+            <if test="projectId != null" >
+                #{projectId,jdbcType=INTEGER},
+            </if>
+            <if test="name != null" >
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="seriesImg != null" >
+                #{seriesImg,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="org.qidian.modal.smartkit.SeriesType" >
+        update series_type
+        <set >
+            <if test="projectId != null" >
+                project_id = #{projectId,jdbcType=INTEGER},
+            </if>
+            <if test="name != null" >
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="seriesImg != null" >
+                series_img = #{seriesImg,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where series_id = #{seriesId,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="org.qidian.modal.smartkit.SeriesType" >
+        update series_type
+        set project_id = #{projectId,jdbcType=INTEGER},
+            name = #{name,jdbcType=VARCHAR},
+            series_img = #{seriesImg,jdbcType=VARCHAR}
+        where series_id = #{seriesId,jdbcType=INTEGER}
+    </update>
+</mapper>

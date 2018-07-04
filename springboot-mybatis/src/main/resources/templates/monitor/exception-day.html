@@ -1,0 +1,123 @@
+<div class="container-fluid qd-vip">
+    <div class="qd-head row">
+        <div class="qd-icon s-icon col-lg-1">
+            <!-- <i class="fa fa-file-text-o"></i> --><img src="../../static/admin/images/vip.png" width="40" height="40" alt=""/></div>
+        <div class="col-lg-5 text-v title-type">监控--全平台异常信息</div>
+    </div>
+    <div class="watch-content">
+        <div class="row gl-content" style="padding-top:30px">
+            <div class="form-inline">
+                <div class="form-group platform-group">
+                    <label for="platform">平台: </label>
+                    <select class="form-control" id="platform" name="msg">
+                        <option  value="-1" th:selected="${msg eq '-1'}" >全部</option>
+					 	<option  value="0" th:selected="${msg eq '0'}">passport</option>
+					 	<option value="1" th:selected="${msg eq '1'}">人人</option>
+					 	<option value="2" th:selected="${msg eq '2'}">天天问</option>
+					 	<option value="3" th:selected="${msg eq '3'}">活动</option>
+					 	<option value="4" th:selected="${msg eq '4'}">起点</option>
+					 	<option value="5" th:selected="${msg eq '5'}">秒聘</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>时间: </label>
+                    <span th:if="${dataType ne 'all'}">
+                        <input th:value="${dataType}" type="text" placeholder="点击选择时间" class="form_datetime form-control watch-time" id="dateTime"/>
+                    </span>
+                    <span th:if="${dataType eq 'all'}">
+                        <input type="text" placeholder="点击选择时间" class="form_datetime form-control watch-time" id="dateTime"/>
+                    </span>
+                </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="form-group platform-group">
+                    <label for="platform">是否处理: </label>
+                    <select class="form-control" id="isDeal" name="isDeal">
+                    	<option  value="-1" th:selected="${isDeal == -1}" >全部</option>
+                        <option  value="0" th:selected="${isDeal == 0}" >未处理</option>
+					 	<option  value="1" th:selected="${isDeal == 1}">已处理</option>
+                    </select>
+                </div>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="form-group">
+                	<input id="" type="button" class="btn btn-primary"  th:onclick="'javascript:query('+${projectId}+')'" value="查询"/>
+                </div>
+            </div>
+            <table class="table table-hover table-bordered text-center watch-table">
+                <thead>
+                    <tr>
+                        <th width="5%">平台名称</th>
+                        <th width="8%">日志日期</th>
+                        <th width="5%">异常次数</th>
+                        <th width="53%">异常类型</th>
+                        <th width="12">处理时间</th>
+                        <th width="5">处理人</th>
+                        <td width="12">操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                	<li  th:each="item : ${list}">
+                		<tr>
+	                        <td th:if="${item.platType == 0}">passport</td>
+	                        <td th:if="${item.platType == 1}">人人</td>
+	                        <td th:if="${item.platType == 2}">天天问</td>
+	                        <td th:if="${item.platType == 3}">活动</td>
+	                        <td th:if="${item.platType == 4}">起点</td>
+	                        <td th:if="${item.platType == 5}">秒聘</td>
+	                        <td th:text="${item.logDate}"></td>
+	                        <td th:text="${item.count}"></td>
+	                        <td th:text="${item.type}"></td>
+	                        <td th:if="${item.dealTime ne 0}">
+								<span th:text="${#dates.format(item.dealTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+	                        </td>
+	                        <td th:if="${item.dealTime eq 0}">
+	                        	<span th:text="0"></span>
+	                        </td>
+	                        <td th:if="${not #lists.isEmpty(item.processor)}">
+	                        	<span th:text="${item.processor}"></span>
+	                        </td>
+	                        <td th:if="${#lists.isEmpty(item.processor)}">
+	                        	<span th:text="无"></span>
+	                        </td>
+	                        <td><!-- th:attr="href='/monitor/deal/'+${item.id}" -->
+                        		<a th:href="@{/monitor/preview/{id}(id=${item.id})}"  target="_blank">详情</a>
+	                        	<span th:if="${#lists.isEmpty(item.processor)}">
+	                        		<a class="" type="" th:onclick="'javascript:deal('+${item.id}+','+${projectId}+','+${pageNow}+','+this+')'">标记为已处理</a>
+	                        	</span>
+	                        </td>
+                    	</tr>
+                	</li>
+                </tbody>
+            </table>
+            <!-- 
+            <div class="watch-pagination">
+                <span>总共19条记录：</span>
+                <ul class="pagination">
+                    <li><a href="#">上一页</a></li>
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li><a href="#">下一页</a></li>
+                </ul>
+            </div> -->
+            
+        </div>
+    </div>
+    
+</div>
+<div class="watch-pagination">
+	<div th:replace="admin/header::pageHtml(${pageNow},'/admin/view/monitor/'+${projectId})"></div>
+</div>
+
+<script th:src="@{/static/admin/js/monitor.js}"></script>
+<script th:inline="javascript">
+jQuery(document).ready(function($) {
+    $(".form_datetime").datetimepicker({
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        language: "zh-CN",
+        todayBtn: true
+    });
+
+});
+</script>

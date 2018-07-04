@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <header th:replace="admin/header::headerFragment('首页','publish')"></header>
+</head>
+<body>
+	<div th:replace="admin/header::left-body"></div>
+	<div class="content"></div>
+
+</body>
+
+<script type="text/javascript">
+    function jump(projectId, t){
+    	var categoryUrl = $(t).attr("categoryUrl");
+       $(".content").load("/admin/view/"+categoryUrl+"/"+projectId);
+       
+    }
+    
+    $('.child-item').click(function(event) {
+        $(this).addClass('navAct').siblings('li').removeClass('navAct');
+        $(this).parents("li").siblings().find('.child-item').removeClass('navAct');
+    });
+
+
+  
+    jQuery(document).ready(function($) {
+        $('.child-title').click(function(event) {
+            $(this).next(".child-ul").slideToggle(400)
+        });
+    });
+    /*新增按钮*/
+    $('.content').on('mouseover', '.gl-slide span:first-child', function(event) {
+        $(this).css({
+            "color":'#4875F6'
+        })
+        $(this).find('img').attr({
+            src: '../../static/admin/images/add-2.png',
+
+        });
+        event.preventDefault();
+    });
+    $('.content').on('mouseout', '.gl-slide span:first-child', function(event) {
+        $(this).css({
+            "color":'#999'
+        })
+        $(this).find('img').attr({
+            src: '../../static/admin/images/add.png',
+
+        });
+        event.preventDefault();
+    });
+
+    /*收起按钮*/
+
+    $('.content').on('click', '.gl-slide span:last-child', function(event) {
+        var tg=$(this).find('em');
+        var tgTxt=tg[0].innerText;
+
+        if(tgTxt=="收起"){
+            tg.text("展开")
+            $(this).find('img').attr({
+                src: '../../static/admin/images/sildedown.png',
+            });
+            $(this).parents(".gl-class").next(".gl-content").slideUp("400")
+        }
+        else{
+            tg.text("收起")
+            $(this).find('img').attr({
+                src: '../../static/admin/images/slideup.png',
+            });
+            $(this).parents(".gl-class").next(".gl-content").slideDown("400")
+        }
+         event.preventDefault();
+    });
+
+//     $('.content').on('click', '.gl-slide span:first-child', function(event) {
+//         jump('add.html')
+//         event.preventDefault();
+//     });
+
+    $(".form_datetime").datetimepicker({
+        format: 'yyyy-mm-dd',
+        autoclose:true,
+        language :"zh-CN",
+        todayBtn : true
+    });
+
+
+</script>
+
+</html>

@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qidian.dao.smartkit.TContentsMapper" >
+
+    <resultMap id="BaseResultMap" type="org.qidian.modal.smartkit.TContents" >
+        <id column="cid" property="cid" jdbcType="INTEGER" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="created" property="created" jdbcType="VARCHAR" />
+        <result column="modified" property="modified" jdbcType="VARCHAR" />
+        <result column="year_month_id" property="yearMonthId" jdbcType="INTEGER" />
+        <result column="content" property="content" jdbcType="LONGVARCHAR" />
+        <result column="author_id" property="authorId" jdbcType="INTEGER" />
+        <result column="project_id" property="projectId" jdbcType="INTEGER" />
+        <result column="seriesId" property="seriesid" jdbcType="INTEGER" />
+        <result column="url" property="url" jdbcType="VARCHAR" />
+        <result column="versions" property="versions" jdbcType="VARCHAR" />
+        <result column="content_type" property="contentType" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    
+    <resultMap id="BaseResultMapDto" type="org.qidian.dto.TContentsDto" >
+        <id column="cid" property="cid" jdbcType="INTEGER" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="created" property="created" jdbcType="VARCHAR" />
+        <result column="modified" property="modified" jdbcType="VARCHAR" />
+        <result column="year_month_id" property="yearMonthId" jdbcType="INTEGER" />
+        <result column="content" property="content" jdbcType="LONGVARCHAR" />
+        <result column="author_id" property="authorId" jdbcType="INTEGER" />
+        <result column="project_id" property="projectId" jdbcType="INTEGER" />
+        <result column="seriesId" property="seriesid" jdbcType="INTEGER" />
+        <result column="url" property="url" jdbcType="VARCHAR" />
+        <result column="versions" property="versions" jdbcType="VARCHAR" />
+        <result column="content_type" property="contentType" jdbcType="VARCHAR" />
+  		 <association property="userInfo" column="{authorId=author_id}"  select="org.qidian.dao.smartkit.UserInfoMapper.selectByAuthorId" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        cid, title, created, modified, content, author_id, seriesId, url, versions, year_month_id, content_type, project_id
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select 
+        <include refid="Base_Column_List" />
+        from t_contents
+        where cid = #{cid,jdbcType=INTEGER}
+    </select>
+    
+    <select id="selectBySeriesId" resultMap="BaseResultMap" parameterType="java.util.Map" >
+        select 
+        <include refid="Base_Column_List" />
+        from t_contents
+        where seriesId = #{seriesId} 
+   		 <if test="msg != null and msg != 'all'" >
+                and  (title LIKE  CONCAT(CONCAT('%',#{msg},'%'))  or  url LIKE  CONCAT(CONCAT('%',#{msg},'%'))) 
+            </if>
+    </select>
+    
+    
+    <select id="selectBySeriesMod" resultMap="BaseResultMap" parameterType="java.util.Map" >
+        select 
+       tc.*
+        from t_contents tc
+        where tc.year_month_id = #{yearMothId} 
+        and  exists( select 1 from series_type st where  st.series_id = tc.seriesId and  st.project_id = #{projectId} )
+   		 <if test="msg != null and msg != 'all'" >
+                and  (title LIKE  CONCAT(CONCAT('%',#{msg},'%'))  or  url LIKE  CONCAT(CONCAT('%',#{msg},'%'))) 
+            </if>
+    </select>
+    
+    
+    <select id="selectBySeriesModDoc" resultMap="BaseResultMap" parameterType="java.util.Map" >
+        select 
+       tc.*
+        from t_contents tc
+        where tc.year_month_id = #{yearMothId} 
+        and  exists( select 1 from project_title pt where tc.project_id=pt.project_id and  pt.project_id = #{projectId} )
+   			 <if test="msg != null and msg != 'all'" >
+                and  (title LIKE  CONCAT(CONCAT('%',#{msg},'%'))  or  url LIKE  CONCAT(CONCAT('%',#{msg},'%'))) 
+            </if>
+   			 <if test="dataType != null and dataType != 'all' and dataType != '全部'" >
+                and content_type = #{dataType}
+            </if>
+    </select>
+    
+    
+    <select id="selectBySeriesUser" resultMap="BaseResultMapDto" parameterType="java.util.Map" >
+        select 
+       tc.*
+        from t_contents tc
+        where tc.author_id = #{uid} 
+        and  exists( select 1 from project_title pt where tc.project_id=pt.project_id and  pt.project_id = #{projectId} )
+   			 <if test="msg != null and msg != 'all'" >
+                and  (title LIKE  CONCAT(CONCAT('%',#{msg},'%'))  or  url LIKE  CONCAT(CONCAT('%',#{msg},'%'))) 
+            </if>
+   			 <if test="dataType != null and dataType != 'all'   and dataType != '全部'" >
+                and content_type = #{dataType}
+            </if>
+    </select>
+    
+    <select id="selectBySeriesModTeclg" resultMap="BaseResultMapDto" parameterType="java.util.Map" >
+        select 
+       tc.*
+        from t_contents tc
+        where tc.year_month_id = #{yearMothId} 
+        and  exists( select 1 from project_title pt where tc.project_id=pt.project_id and  pt.project_id = #{projectId} )
+   			 <if test="msg != null and msg != 'all'" >
+                and  (title LIKE  CONCAT(CONCAT('%',#{msg},'%'))  or  url LIKE  CONCAT(CONCAT('%',#{msg},'%'))) 
+            </if>
+   			 <if test="dataType != null and dataType != 'all'  and dataType != '全部'" >
+                and content_type = #{dataType}
+            </if>
+    </select>
+    
+
+    
+    
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from t_contents
+        where cid = #{cid,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="org.qidian.modal.smartkit.TContents"  useGeneratedKeys="true"  keyColumn="cid" keyProperty="cid">
+        insert into t_contents (cid, title, created, 
+            modified, content, author_id, 
+            seriesId, url, versions, year_month_id, content_type, project_id)
+        values (#{cid,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{created,jdbcType=VARCHAR}, 
+            #{modified,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR}, #{authorId,jdbcType=INTEGER}, 
+            #{seriesid,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{versions,jdbcType=VARCHAR}, #{yearMonthId},#{contentType}, #{projectId}
+           )
+    </insert>
+
+
+    <insert id="insertSelective" parameterType="org.qidian.modal.smartkit.TContents"  useGeneratedKeys="true"  keyColumn="cid" keyProperty="cid">
+        insert into t_contents
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="cid != null" >
+                cid,
+            </if>
+            <if test="title != null" >
+                title,
+            </if>
+            <if test="created != null" >
+                created,
+            </if>
+            <if test="modified != null" >
+                modified,
+            </if>
+            <if test="content != null" >
+                content,
+            </if>
+            <if test="authorId != null" >
+                author_id,
+            </if>
+            <if test="seriesid != null" >
+                seriesId,
+            </if>
+            <if test="url != null" >
+                url,
+            </if>
+            <if test="versions != null" >
+                versions,
+            </if>
+            <if test="yearMonthId != null" >
+                year_month_id,
+            </if>
+            <if test="contentType != null" >
+                content_type,
+            </if>
+            <if test="projectId != null" >
+                project_id,
+            </if>
+      
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="cid != null" >
+                #{cid,jdbcType=INTEGER},
+            </if>
+            <if test="title != null" >
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="created != null" >
+                #{created,jdbcType=VARCHAR},
+            </if>
+            <if test="modified != null" >
+                #{modified,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null" >
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="authorId != null" >
+                #{authorId,jdbcType=INTEGER},
+            </if>
+            <if test="seriesid != null" >
+                #{seriesid,jdbcType=INTEGER},
+            </if>
+            <if test="url != null" >
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="versions != null" >
+                #{versions,jdbcType=VARCHAR},
+            </if>
+            <if test="yearMonthId != null" >
+                #{yearMonthId},
+            </if>
+            <if test="contentType != null" >
+                #{contentType},
+            </if>
+            <if test="projectId != null" >
+                #{projectId},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="org.qidian.modal.smartkit.TContents" >
+        update t_contents
+        <set >
+            <if test="title != null" >
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="created != null" >
+                created = #{created,jdbcType=VARCHAR},
+            </if>
+            <if test="modified != null" >
+                modified = #{modified,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null" >
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="authorId != null" >
+                author_id = #{authorId,jdbcType=INTEGER},
+            </if>
+            <if test="authorId != null" >
+                project_id = #{projectId,jdbcType=INTEGER},
+            </if>
+            <if test="seriesid != null" >
+                seriesId = #{seriesid,jdbcType=INTEGER},
+            </if>
+            <if test="url != null" >
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="versions != null" >
+                versions = #{versions,jdbcType=VARCHAR},
+            </if>
+            <if test="yearMonthId != null" >
+                year_month_id = #{yearMonthId},
+            </if>
+            <if test="contentType != null" >
+                content_type = #{contentType},
+            </if>
+        </set>
+        where cid = #{cid,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="org.qidian.modal.smartkit.TContents" >
+        update t_contents
+        set title = #{title,jdbcType=VARCHAR},
+            created = #{created,jdbcType=VARCHAR},
+            modified = #{modified,jdbcType=VARCHAR},
+            content = #{content,jdbcType=LONGVARCHAR},
+            author_id = #{authorId,jdbcType=INTEGER},
+            seriesId = #{seriesid,jdbcType=INTEGER},
+            url = #{url,jdbcType=VARCHAR},
+            year_month_id = #{yearMonthId},
+            content_type = #{contentType},
+            project_id = #{projectId},
+            versions = #{versions,jdbcType=VARCHAR}
+        where cid = #{cid,jdbcType=INTEGER}
+    </update>
+</mapper>

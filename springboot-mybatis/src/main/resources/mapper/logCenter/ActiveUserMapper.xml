@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qidian.dao.logCenter.ActiveUserMapper" >
+
+    <resultMap id="BaseResultMap" type="org.qidian.modal.logCenter.ActiveUser" >
+        <result column="logDate" property="logDate" jdbcType="INTEGER" />
+        <result column="uid" property="uid" jdbcType="INTEGER" />
+        <result column="pv" property="pv" jdbcType="INTEGER" />
+        <result column="platType" property="platType" jdbcType="INTEGER" />
+        <result column="clientType" property="clientType" jdbcType="INTEGER" />
+    </resultMap>
+
+    <insert id="insert" parameterType="org.qidian.modal.logCenter.ActiveUser"  >
+        insert into active_user (logDate, uid, pv, 
+            platType, clientType)
+        values (#{logDate,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{pv,jdbcType=INTEGER}, 
+            #{platType,jdbcType=INTEGER}, #{clientType,jdbcType=INTEGER})
+    </insert>
+
+    <insert id="insertSelective" parameterType="org.qidian.modal.logCenter.ActiveUser" >
+        insert into active_user
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="logDate != null" >
+                logDate,
+            </if>
+            <if test="uid != null" >
+                uid,
+            </if>
+            <if test="pv != null" >
+                pv,
+            </if>
+            <if test="platType != null" >
+                platType,
+            </if>
+            <if test="clientType != null" >
+                clientType,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="logDate != null" >
+                #{logDate,jdbcType=INTEGER},
+            </if>
+            <if test="uid != null" >
+                #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="pv != null" >
+                #{pv,jdbcType=INTEGER},
+            </if>
+            <if test="platType != null" >
+                #{platType,jdbcType=INTEGER},
+            </if>
+            <if test="clientType != null" >
+                #{clientType,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+</mapper>

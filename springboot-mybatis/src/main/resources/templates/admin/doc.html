@@ -1,0 +1,61 @@
+<div class="container-fluid qd-vip">
+    <div class="qd-head row">
+        <div class="qd-icon s-icon col-lg-1">
+            <!-- <i class="fa fa-file-text-o"></i> -->
+            <img src="../../static/admin/images/vip.png" width="40" height="40" alt="" /></div>
+        <div class="col-lg-2 text-v title-type" th:text="${project.projectName}">起点社员</div>
+      <input type="hidden" name="projectid"  id="projectid"   th:value="${projectId}"  />
+        <div class="col-lg-4 sch-box">
+            <input type="text" name="msg"  th:value="${msg}" placeholder="请输入硬要搜索的内容" class="form-control head-sch" />
+            <i class="fa fa-search   docSearch"></i>
+        </div>
+        <div class="add-if-type-btn col-lg-2  text-right">
+            <button class="btn " data-toggle="modal" th:onclick="'javascript:addEditView(0,'+${projectId}+')'"><em>+</em>新增</button>
+        </div>
+        <div class="col-lg-2 type-order ">
+            <select name="" class="form-control" value="" id="order">
+                <option  th:value="${dataType}"  th:text="${dataType}"  >全部</option>
+                <option value="全部"  th:if="${dataType != '全部'}">全部</option>
+                <option value="起点学院"  th:if="${dataType !='起点学院'}">起点学院</option>
+                <option value="人人都是产品经理"  th:if="${dataType !='人人都是产品经理'}">人人都是产品经理</option>
+                <option value="秒聘网"  th:if="${dataType !='秒聘网'}">秒聘网</option>
+            </select>
+        </div>
+        
+    </div>
+    <div class="api-content">
+        <div th:each="m,iterStat  : ${vo}">
+			<!-- 月份 1 -->
+			<div class="row gl-class">
+             	<div class="col-lg-1"   style="margin-right: 17px; height: 54px;"><img src="../../static/admin/images/doc-icon.png" /></div>
+			    <div class="glblock-name col-lg-2 text-v" th:text="${m.yearMonthChar}"></div>
+			    <div class="gl-slide col-lg-2">
+			        <span class="trst"  th:if="${iterStat.index !=0 }"  ><img src="../../static/admin/images/sildedown.png" width="14" height="14" /><em>展开</em></span>
+			  		 <span class=""  th:if="${iterStat.index ==0 }" ><img src="../../static/admin/images/slideup.png" width="14" height="14" /><em>收起</em></span>
+
+			    </div>
+			</div>
+			<div class="row gl-content"  th:if="${iterStat.index==0 }" > 
+            <div class="col-lg-4"  th:each="list,stat : ${m.tContents}">
+                <div class="gl-item">
+                    <span  th:onclick="'javascript:hrefWindow('+${list.cid}+')' "  class="gl-item-a trst"  th:text="${list.title}"></span>
+                    <span class="gl-item-b"  th:text="${list.url}"></span>
+                     <span class="gl-item-c  gl_hide"  th:text="${list.created}"></span>
+                    <span th:onclick="'javascript:openWindow('+${list.cid}+')' " class="gl-item-c   gl_show"  style="display: none;" >编辑</span>
+                </div>
+            </div>
+        </div>
+		<div class="row gl-content"  th:if="${iterStat.index!=0 }"  style="display: none;" >
+            <div class="col-lg-4"  th:each="list,stat : ${m.tContents}">
+                <div class="gl-item">
+                    <span  th:onclick="'javascript:hrefWindow('+${list.cid}+')' "  class="gl-item-a trst"  th:text="${list.title}"></span>
+                    <span class="gl-item-b"  th:text="${list.url}"></span>
+                     <span class="gl-item-c  gl_hide"  th:text="${list.created}"></span>
+                    <span th:onclick="'javascript:openWindow('+${list.cid}+')' " class="gl-item-c   gl_show"  style="display: none;" >编辑</span>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+	<script th:src="@{/static/admin/js/doc.js}"></script>
