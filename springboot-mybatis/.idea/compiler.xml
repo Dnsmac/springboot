@@ -6,20 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="spring-boot-starter-consumer" />
-        <module name="spring-boot-starter-mqtt-consumer" />
-        <module name="springboot-restful-api" />
+        <module name="com.spring.cloud.smartKit" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="spring-restful-api" target="1.8" />
+      <module name="com.spring.cloud.smartKit" target="1.8" />
     </bytecodeTargetLevel>
-  </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="spring-boot-starter-consumer" options="-parameters" />
-      <module name="spring-restful-api" options="-parameters" />
-      <module name="springboot-restful-api" options="-parameters" />
-    </option>
   </component>
 </project>
